@@ -1,0 +1,270 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════
+   言葉 KOTOBA — Japanese Design System
+   Wabi-sabi • Zen • Ink & Paper
+   ═══════════════════════════════════════════ */
+
+@theme inline {
+  /* ─── Sumi (墨) Ink Tones ─── */
+  --color-sumi-950: #0f0e0c;
+  --color-sumi-900: #1a1814;
+  --color-sumi-800: #2d2a25;
+  --color-sumi-700: #3d3935;
+  --color-sumi-600: #524d47;
+  --color-sumi-500: #6b6560;
+  --color-sumi-400: #8a8379;
+
+  /* ─── Washi (和紙) Paper Tones ─── */
+  --color-washi-50: #fdfaf5;
+  --color-washi-100: #f7f3eb;
+  --color-washi-200: #f0ebe3;
+  --color-washi-300: #e6dfd5;
+  --color-washi-400: #d4cdc3;
+  --color-washi-500: #b8b0a4;
+
+  /* ─── Matcha (抹茶) Correct ─── */
+  --color-matcha-700: #1e5038;
+  --color-matcha-600: #2d6a4f;
+  --color-matcha-500: #538d6e;
+  --color-matcha-400: #6aaa84;
+
+  /* ─── Yamabuki (山吹) Present/Gold ─── */
+  --color-yamabuki-700: #8b5e14;
+  --color-yamabuki-600: #a97218;
+  --color-yamabuki-500: #c4841d;
+  --color-yamabuki-400: #daa34a;
+
+  /* ─── Ishi (石) Stone/Absent ─── */
+  --color-ishi-700: #3d3935;
+  --color-ishi-600: #524d47;
+  --color-ishi-500: #6b6560;
+  --color-ishi-400: #8a8379;
+
+  /* ─── Sakura (桜) Accent ─── */
+  --color-sakura-600: #a07078;
+  --color-sakura-500: #c9929d;
+  --color-sakura-400: #d4a0a7;
+  --color-sakura-300: #e8c4ca;
+  --color-sakura-200: #f0d8dd;
+
+  /* ─── Kurenai (紅) Vermillion ─── */
+  --color-kurenai-600: #a0312e;
+  --color-kurenai-500: #c73e3a;
+  --color-kurenai-400: #dc5955;
+
+  /* ─── Typography ─── */
+  --font-serif: var(--font-noto-serif-jp), "Noto Serif JP", "Georgia", serif;
+  --font-sans: var(--font-noto-sans-jp), "Noto Sans JP", system-ui, sans-serif;
+
+  /* ─── Spacing ─── */
+  --spacing-tile: 62px;
+  --spacing-tile-gap: 5px;
+  --spacing-key-gap: 6px;
+}
+
+/* ─── Base Styles ─── */
+:root {
+  --background: #f7f3eb;
+  --foreground: #1a1814;
+  --tile-border: #d4cdc3;
+  --tile-border-active: #8a8379;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-serif);
+  min-height: 100dvh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Subtle washi paper texture overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(139, 126, 112, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(139, 126, 112, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(139, 126, 112, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══════════════════════════════════════════
+   Tile Animations
+   ═══════════════════════════════════════════ */
+
+/* Flip animation for revealing tile state */
+@keyframes flip-in {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(-90deg);
+  }
+  50.1% {
+    transform: rotateX(-90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+.tile-flip {
+  animation: flip-in 500ms ease-in-out forwards;
+}
+
+/* Pop animation when typing a letter */
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+.tile-pop {
+  animation: pop 100ms ease-in-out;
+}
+
+/* Shake animation for invalid words */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 50%, 90% { transform: translateX(-6px); }
+  30%, 70% { transform: translateX(6px); }
+}
+
+.row-shake {
+  animation: shake 400ms ease-in-out;
+}
+
+/* Bounce animation for winning row */
+@keyframes bounce-tile {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-30px); }
+  60% { transform: translateY(-15px); }
+  80% { transform: translateY(-5px); }
+}
+
+.tile-bounce {
+  animation: bounce-tile 800ms ease-in-out;
+}
+
+/* ═══════════════════════════════════════════
+   Keyboard Styles
+   ═══════════════════════════════════════════ */
+
+.key-correct {
+  background-color: var(--color-matcha-600) !important;
+  color: var(--color-washi-50) !important;
+  border-color: var(--color-matcha-700) !important;
+}
+
+.key-present {
+  background-color: var(--color-yamabuki-500) !important;
+  color: var(--color-washi-50) !important;
+  border-color: var(--color-yamabuki-700) !important;
+}
+
+.key-absent {
+  background-color: var(--color-ishi-600) !important;
+  color: var(--color-washi-200) !important;
+  border-color: var(--color-ishi-700) !important;
+}
+
+/* ═══════════════════════════════════════════
+   Modal & Overlay
+   ═══════════════════════════════════════════ */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-overlay {
+  animation: fade-in 200ms ease-out;
+}
+
+.modal-content {
+  animation: slide-up 300ms ease-out;
+}
+
+/* ═══════════════════════════════════════════
+   Toast
+   ═══════════════════════════════════════════ */
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toast-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+.toast-enter {
+  animation: toast-in 200ms ease-out forwards;
+}
+
+.toast-exit {
+  animation: toast-out 200ms ease-in forwards;
+}
+
+/* ═══════════════════════════════════════════
+   Scrollbar
+   ═══════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-washi-400);
+  border-radius: 3px;
+}
+
+/* ═══════════════════════════════════════════
+   Reduced Motion
+   ═══════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .tile-flip,
+  .tile-pop,
+  .row-shake,
+  .tile-bounce,
+  .modal-overlay,
+  .modal-content,
+  .toast-enter,
+  .toast-exit {
+    animation: none !important;
+  }
+}
